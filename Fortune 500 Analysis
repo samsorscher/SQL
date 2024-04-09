@@ -1,0 +1,20 @@
+# Relative sizes
+select*,
+CASE 
+	WHEN employees <3000 THEN 'Small'
+    WHEN employees >=3000 and employees <=5000 THEN 'Medium'
+	ELSE 'Large'
+END as Company_Size
+from fortune_companies;
+
+# Employee retention over 5 years
+select*
+from fortune_companies
+group by industry
+having avg_employee_tenure >=5;
+
+# Pro worker policies ordered by tenure
+SELECT *
+FROM fortune_companies
+WHERE paid_time_off_days >=10 and maternity_leave_weeks>=12 and healthcare_benefits=1
+ORDER BY avg_employee_tenure DESC;
