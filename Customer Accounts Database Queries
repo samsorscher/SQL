@@ -96,5 +96,46 @@ WHERE location like '%los Angeles%'
 GROUP BY product;
 
 
+##Getting the hang of it
 
+SELECT location, count(orderID) 
+FROM BIT_DB.JanSales
+WHERE location like '%NY%'
+AND length(orderID) = 6
+AND orderid <> 'Order ID'
+GROUP BY orderID
+Having count(orderID) > 2;
+
+SELECT * 
+FROM customers;
+
+SELECT product, sum(quantity)
+FROM FebSales
+WHERE product like '%headphones%'
+GROUP BY product;
+
+
+SELECT sum(FebSales.price*FebSales.Quantity)/count(customers.acctnum) as AverageSpent
+FROM FebSales
+LEFT JOIN customers
+ON FebSales.orderID = customers.order_id
+
+WHERE length(orderid) = 6 
+AND orderid <> 'Order ID'
+GROUP BY customers.acctnum;
+
+SELECT sum(FebSales.Quantity)/count(customers.acctnum)
+FROM FebSales
+LEFT JOIN customers
+ON FebSales.orderID = customers.order_id
+WHERE length(orderid) = 6 
+AND orderid <> 'Order ID';
+
+SELECT product, sum(price*quantity) as Revenue
+FROM JanSales
+WHERE length(orderid) = 6 
+AND orderid <> 'Order ID'
+GROUP BY product
+ORDER BY Revenue DESC
+LIMIT 1;
 
