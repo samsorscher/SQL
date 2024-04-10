@@ -1,0 +1,95 @@
+# Question #1
+How many orders were placed in January?
+Remember to filter out the blank and incorrect order IDs like we did in the "dealing with messy data" section of the previous lesson!
+
+
+Question #2
+How many of those orders were for an iPhone?
+
+Question #3
+Select the customer account numbers for all the orders that were placed in February.
+
+
+Question #4
+Which product was the cheapest one sold in January, and what was the price?
+
+Question #5
+What is the total revenue for each product sold in January?
+(Revenue can be calculated using the number of products sold and the price of the products).
+
+Question #6
+Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+
+
+Question #7
+How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers?
+
+SELECT * FROM BIT_DB.JanSales jan;
+
+SELECT count(orderID) FROM JanSales
+WHERE length(orderID) = 6
+AND orderid <> 'Order ID';
+
+SELECT count(orderID)
+FROM JanSales
+WHERE length(orderID) = 6
+AND orderid <> 'Order ID'
+AND Product = 'iPhone';
+
+
+SELECT distinct order_id, acctnum
+FROM customers
+INNER JOIN FebSales
+ON customers.order_id = FebSales.orderID
+WHERE length(orderID) = 6
+AND orderid <> 'Order ID';
+
+SELECT distinct product, price from JanSales
+WHERE price in (SELECT min(price) FROM BIT_DB.JanSales)
+
+SELECT distinct product, price
+FROM JanSales
+ORDER BY price ASC LIMIT 1;
+
+SELECT product, price, price*sum(quantity) as Revenue
+FROM JanSales
+WHERE product <> 'Product'
+GROUP BY product;
+
+SELECT * FROM BIT_DB.FebSales;
+
+SELECT sum(quantity), product, price*sum(quantity) as Revenue, location
+FROM FebSales
+WHERE location = '548 Lincoln St, Seattle, WA 98101'
+GROUP BY product;
+
+SELECT avg(price*sum(quantity)) as AverageSpent, product
+FROM FebSales
+WHERE quantity > 1;
+
+SELECT * FROM BIT_DB.FebSales;
+
+select 
+count(distinct cust.acctnum), 
+avg(quantity*price)
+FROM BIT_DB.FebSales Feb
+LEFT JOIN BIT_DB.customers cust
+ON FEB.orderid=cust.order_id
+WHERE Feb.Quantity>2
+AND length(orderid) = 6 
+AND orderid <> 'Order ID'
+
+
+SELECT distinct count(customers.acctnum), AVG(FebSales.Quantity * FebSales.price)
+FROM customers
+LEFT JOIN FebSales
+ON customers.order_id = FebSales.orderID
+WHERE FebSales.Quantity > 2
+AND length(orderid) = 6 
+AND orderid <> 'Order ID';
+
+
+
+
+
+
